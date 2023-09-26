@@ -20,7 +20,7 @@ public class ShowTimeModel {
     @Temporal(TemporalType.TIMESTAMP) // Puedes usar TemporalType.DATE si solo necesitas la fecha sin hora
     @Column(name = "date", nullable = false)
     private Date functionDate;
-    @Column(name = "movieId", nullable = false)
+    @Column(name = "movieId", nullable = false)  //djaskd
     private Long movieId;
     @Column(name = "cinemaId", nullable = false)
     private Long cinemaId;
