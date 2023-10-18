@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins="*")
-@RequestMapping("/api/v1/showTime")
+@RequestMapping("/api/TuCine/v1/showtime/")
 public class ShowTimeController {
 
     private final ShowTimeService showTimeService;
