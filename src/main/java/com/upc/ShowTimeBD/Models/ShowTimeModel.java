@@ -1,4 +1,4 @@
-package com.upc.showTime.Models;
+package com.upc.ShowTimeBD.Models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +13,7 @@ import java.util.Date;
 @Builder
 @Data
 @Table(name = "showTime")
+@Entity
 public class ShowTimeModel {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)

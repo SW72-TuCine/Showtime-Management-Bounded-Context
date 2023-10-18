@@ -1,7 +1,7 @@
-package com.upc.showTime.Controller;
+package com.upc.ShowTimeBD.Controller;
 
-import com.upc.showTime.Models.ShowTimeModel;
-import com.upc.showTime.Service.ShowTimeService;
+import com.upc.ShowTimeBD.Models.ShowTimeModel;
+import com.upc.ShowTimeBD.Service.ShowTimeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -76,10 +76,11 @@ public class ShowTimeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    /*
     @PutMapping(value = "/{id}/capacity/{capacity}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> updateCapacity(@PathVariable("id") Long id, @PathVariable("capacity") int capacity){
         try {
-            int updateCapacity = showTimeService.UpdateCapacity(id,capacity);
+            int updateCapacity = showTimeService.updateCapacity(id,capacity);
             if(updateCapacity != 0)
                 return new ResponseEntity<>(updateCapacity, HttpStatus.OK);
             else
@@ -88,4 +89,6 @@ public class ShowTimeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+     */
 }

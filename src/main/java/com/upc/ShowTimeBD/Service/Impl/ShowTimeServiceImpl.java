@@ -1,8 +1,8 @@
-package com.upc.showTime.Service.Impl;
+package com.upc.ShowTimeBD.Service.Impl;
 
-import com.upc.showTime.Models.ShowTimeModel;
-import com.upc.showTime.Repositories.ShowTimeRepository;
-import com.upc.showTime.Service.ShowTimeService;
+import com.upc.ShowTimeBD.Models.ShowTimeModel;
+import com.upc.ShowTimeBD.Repositories.ShowTimeRepository;
+import com.upc.ShowTimeBD.Service.ShowTimeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,9 +39,11 @@ public class ShowTimeServiceImpl implements ShowTimeService {
         return showTimeRepository.findById(id);
     }
 
-
+/*
     @Override
-    public int UpdateCapacity(Long id, int capacity) throws Exception {
-        return showTimeRepository.UpdateCapacity(id,capacity);
+    public int updateCapacity(Long id, int capacity) throws Exception {
+        return showTimeRepository.updateCapacity(id,capacity);
     }
+
+ */
 }

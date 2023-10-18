@@ -1,4 +1,4 @@
-package com.upc.showTime.Service;
+package com.upc.ShowTimeBD.Service;
 
 import java.util.List;
 import java.util.Optional;
