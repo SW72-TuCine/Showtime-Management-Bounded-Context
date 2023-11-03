@@ -11,10 +11,13 @@ import feign.FeignException;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,9 +36,8 @@ public class ShowTimeServiceImpl implements ShowTimeService {
     @Override
     @Transactional
     public ShowTimeModel save(ShowTimeModel showTimeModel) throws Exception {
-        String id = showTimeModel.getCinemaId().toString();
-        ValidateIfCinemaExists(id);
-        ValidateIfMovieExist(showTimeModel.getMovieId().toString());
+        //ValidateIfCinemaExists(showTimeModel.getCinemaId().toString());
+        //ValidateIfMovieExist(showTimeModel.getMovieId().toString());
         return showTimeRepository.save(showTimeModel);
     }
     @Override
@@ -55,17 +57,25 @@ public class ShowTimeServiceImpl implements ShowTimeService {
     }
 
 
-    private void ValidateIfMovieExist(String id) throws Exception{
-        try{
-            ResponseEntity<FilmResponse> FilmbResponse = movieClient.getMovieById(Long.valueOf(id));
-            if(FilmbResponse.getBody().getId() == null){
+    private void validateIfMovieExists(String id) throws ValidationException {
+        try {
+            ResponseEntity<FilmResponse> filmResponse = movieClient.getMovieById(Long.valueOf(id));
+
+            if (filmResponse.getStatusCode() != HttpStatus.OK || filmResponse.getBody() == null) {
                 throw new ValidationException("Film does not exist");
             }
-
-        } catch (FeignException feignException) {
-            throw new ValidationException(feignException.getMessage());
+        } catch (HttpServerErrorException ex) {
+            throw new ValidationException("Error while checking film existence: " + ex.getMessage());
+        } catch (HttpClientErrorException ex) {
+            if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new ValidationException("Film does not exist");
+            }
+            throw new ValidationException("Error while checking film existence: " + ex.getMessage());
+        } catch (Exception ex) {
+            throw new ValidationException("An error occurred while checking film existence: " + ex.getMessage());
         }
     }
+
     private void ValidateIfCinemaExists(String id) throws Exception {
         try{
             ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCinemaByName(Long.valueOf(id));
