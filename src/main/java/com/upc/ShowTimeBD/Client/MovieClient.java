@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "cineclub-administration-service",path = "/api/TuCine/v1/cineclub_administration")
 public interface MovieClient {
     @RequestMapping("/films/verify/{filmName}")
-    boolean checkIfMovieExist( @PathVariable("filmName") String  filmName) throws RuntimeException;
+    boolean checkIfMovieExist( @PathVariable("filmName") Long  filmName) throws RuntimeException;
 
     @GetMapping("/films/search")
-    public ResponseEntity<FilmResponse> getMovieById(@RequestParam("title") String title);
+    public ResponseEntity<FilmResponse> getMovieById(@PathVariable("title") Long title);
 
 }
