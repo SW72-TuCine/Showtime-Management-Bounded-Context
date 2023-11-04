@@ -36,7 +36,7 @@ public class ShowTimeServiceImpl implements ShowTimeService {
     @Override
     @Transactional
     public ShowTimeModel save(ShowTimeModel showTimeModel) throws Exception {
-        //ValidateIfCinemaExists(showTimeModel.getCinemaId().toString());
+        ValidateIfCinemaExists(showTimeModel.getCinemaId().toString());
         //ValidateIfMovieExist(showTimeModel.getMovieId().toString());
         return showTimeRepository.save(showTimeModel);
     }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "cineclub-administration-service",path = "/api/TuCine/v1/cineclub_administration")
+@FeignClient(name = "cineclub-administration-service",url= "http://localhost:8082", path = "/api/TuCine/v1/cineclub_administration")
 public interface CinemaClient {
 
     @RequestMapping("/cineclubs/verify/{cineclubId}")
