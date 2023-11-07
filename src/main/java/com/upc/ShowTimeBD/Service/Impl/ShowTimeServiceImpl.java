@@ -78,8 +78,9 @@ public class ShowTimeServiceImpl implements ShowTimeService {
 
     private void ValidateIfCinemaExists(String id) throws Exception {
         try{
-            ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCinemaByName(Long.valueOf(id));
-            if(CineClubResponse.getBody().getId() == null){
+            //ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCinemaByName(Long.valueOf(id));
+            boolean CineClubResponse = cinemaClient.checkIfCinemaExist(Long.valueOf(id));
+            if(!CineClubResponse){
                 throw new ValidationException("Cinema does not exist");
             }
 
