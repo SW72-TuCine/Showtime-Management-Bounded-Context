@@ -19,4 +19,5 @@ public interface CinemaClient {
     public ResponseEntity<CinemaResponse> getCinemaByName(@PathVariable("cineclubId") Long id);
 
 
+
 }

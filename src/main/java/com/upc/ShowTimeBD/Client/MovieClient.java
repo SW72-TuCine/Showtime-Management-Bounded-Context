@@ -14,7 +14,7 @@ public interface MovieClient {
     @RequestMapping("/films/verify/{filmName}")
     boolean checkIfMovieExist( @PathVariable("filmName") Long  filmName) throws RuntimeException;
 
-    @GetMapping("/films/search")
-    public ResponseEntity<FilmResponse> getMovieById(@PathVariable("title") Long title);
+    @GetMapping("/films/getById/{id}")
+    public ResponseEntity<FilmResponse> getMovieById(@PathVariable("id") Long filmId);
 
 }

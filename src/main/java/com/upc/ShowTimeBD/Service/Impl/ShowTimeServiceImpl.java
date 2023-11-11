@@ -37,6 +37,8 @@ public class ShowTimeServiceImpl implements ShowTimeService {
     @Transactional
     public ShowTimeModel save(ShowTimeModel showTimeModel) throws Exception {
         ValidateIfCinemaExists(showTimeModel.getCinemaId().toString());
+        ValidateCinemaStatus(showTimeModel.getCinemaId().toString());
+        Capacity(showTimeModel.getCinemaId().toString());
         //ValidateIfMovieExist(showTimeModel.getMovieId().toString());
         return showTimeRepository.save(showTimeModel);
     }
@@ -58,21 +60,13 @@ public class ShowTimeServiceImpl implements ShowTimeService {
 
 
     private void validateIfMovieExists(String id) throws ValidationException {
-        try {
-            ResponseEntity<FilmResponse> filmResponse = movieClient.getMovieById(Long.valueOf(id));
-
-            if (filmResponse.getStatusCode() != HttpStatus.OK || filmResponse.getBody() == null) {
+        try{
+            boolean FilmResponse = movieClient.checkIfMovieExist(Long.valueOf(id));
+            if(!FilmResponse){
                 throw new ValidationException("Film does not exist");
             }
-        } catch (HttpServerErrorException ex) {
-            throw new ValidationException("Error while checking film existence: " + ex.getMessage());
-        } catch (HttpClientErrorException ex) {
-            if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new ValidationException("Film does not exist");
-            }
-            throw new ValidationException("Error while checking film existence: " + ex.getMessage());
-        } catch (Exception ex) {
-            throw new ValidationException("An error occurred while checking film existence: " + ex.getMessage());
+        } catch (FeignException feignException) {
+            throw new ValidationException(feignException.getMessage());
         }
     }
 
@@ -84,6 +78,28 @@ public class ShowTimeServiceImpl implements ShowTimeService {
                 throw new ValidationException("Cinema does not exist");
             }
 
+        } catch (FeignException feignException) {
+            throw new ValidationException(feignException.getMessage());
+        }
+    }
+    private void ValidateCinemaStatus(String id) throws Exception{
+        try{
+            ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCinemaByName(Long.valueOf(id));
+            if(CineClubResponse.getBody().getStatus().equals("CLOSED")){
+                throw new ValidationException("Cinema is closed. Please, wait for tomorrow to create a new showtime");
+            }
+        } catch (FeignException feignException) {
+            throw new ValidationException(feignException.getMessage());
+        }
+    }
+    private void Capacity(String id){
+        try{
+            ShowTimeModel showtime = new ShowTimeModel();
+            int showtimeCapacity = showtime.getCapacity();
+            ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCinemaByName(Long.valueOf(id));
+            if(CineClubResponse.getBody().getCapacity() < showtimeCapacity){
+                throw new ValidationException("Introduce a valid capacity");
+            }
         } catch (FeignException feignException) {
             throw new ValidationException(feignException.getMessage());
         }

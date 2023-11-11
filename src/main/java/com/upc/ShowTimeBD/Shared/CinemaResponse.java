@@ -8,6 +8,8 @@ public class CinemaResponse {
     Long ownerId;
     String name;
     String description;
+    String status;
+    Integer capacity;
     TypeCinema typeCinema;
 
 }
