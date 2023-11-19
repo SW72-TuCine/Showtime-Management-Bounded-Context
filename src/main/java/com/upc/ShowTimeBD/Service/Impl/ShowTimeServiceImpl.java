@@ -34,7 +34,7 @@ public class ShowTimeServiceImpl implements ShowTimeService {
     public ShowTimeModel save(ShowTimeModel showTimeModel) throws Exception {
         ValidateIfCinemaExists(showTimeModel.getCinemaId().toString());
         validateIfMovieExists(showTimeModel.getMovieId().toString());
-        //ValidateCinemaStatus(showTimeModel.getCinemaId().toString());
+        ValidateCinemaStatus(showTimeModel.getCinemaId().toString());
         Capacity(showTimeModel.getCinemaId().toString(),showTimeModel.getCapacity());
         return showTimeRepository.save(showTimeModel);
     }
@@ -81,7 +81,7 @@ public class ShowTimeServiceImpl implements ShowTimeService {
     private void ValidateCinemaStatus(String id) throws Exception{
         try{
             ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCineclubById(Long.valueOf(id));
-            if(CineClubResponse.getBody().getStatus().equals("CLOSED")){
+            if(CineClubResponse.getBody().getState().equals("CLOSED")){
                 throw new ValidationException("Cinema is closed. Please, wait for tomorrow to create a new showtime");
             }
         } catch (FeignException feignException) {
