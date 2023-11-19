@@ -6,18 +6,14 @@ import com.upc.ShowTimeBD.Models.ShowTimeModel;
 import com.upc.ShowTimeBD.Repositories.ShowTimeRepository;
 import com.upc.ShowTimeBD.Service.ShowTimeService;
 import com.upc.ShowTimeBD.Shared.CinemaResponse;
-import com.upc.ShowTimeBD.Shared.FilmResponse;
 import feign.FeignException;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,10 +78,9 @@ public class ShowTimeServiceImpl implements ShowTimeService {
         }
     }
 
-
     private void ValidateCinemaStatus(String id) throws Exception{
         try{
-            ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCinemaByName(Long.valueOf(id));
+            ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCineclubById(Long.valueOf(id));
             if(CineClubResponse.getBody().getStatus().equals("CLOSED")){
                 throw new ValidationException("Cinema is closed. Please, wait for tomorrow to create a new showtime");
             }
@@ -95,8 +90,8 @@ public class ShowTimeServiceImpl implements ShowTimeService {
     }
     private void Capacity(String id, int showtimeCapacity){
         try{
-            ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCinemaByName(Long.valueOf(id));
-            if(CineClubResponse.getBody().getCapacity() >= showtimeCapacity){
+            ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCineclubById(Long.valueOf(id));
+            if(!(CineClubResponse.getBody().getCapacity() >= showtimeCapacity)){
                 throw new ValidationException("Introduce a valid capacity");
             }
         } catch (FeignException feignException) {
