@@ -37,9 +37,9 @@ public class ShowTimeServiceImpl implements ShowTimeService {
     @Transactional
     public ShowTimeModel save(ShowTimeModel showTimeModel) throws Exception {
         ValidateIfCinemaExists(showTimeModel.getCinemaId().toString());
-        ValidateCinemaStatus(showTimeModel.getCinemaId().toString());
-        Capacity(showTimeModel.getCinemaId().toString());
-        //ValidateIfMovieExist(showTimeModel.getMovieId().toString());
+        validateIfMovieExists(showTimeModel.getMovieId().toString());
+        //ValidateCinemaStatus(showTimeModel.getCinemaId().toString());
+        Capacity(showTimeModel.getCinemaId().toString(),showTimeModel.getCapacity());
         return showTimeRepository.save(showTimeModel);
     }
     @Override
@@ -69,7 +69,6 @@ public class ShowTimeServiceImpl implements ShowTimeService {
             throw new ValidationException(feignException.getMessage());
         }
     }
-
     private void ValidateIfCinemaExists(String id) throws Exception {
         try{
             //ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCinemaByName(Long.valueOf(id));
@@ -92,12 +91,10 @@ public class ShowTimeServiceImpl implements ShowTimeService {
             throw new ValidationException(feignException.getMessage());
         }
     }
-    private void Capacity(String id){
+    private void Capacity(String id, int showtimeCapacity){
         try{
-            ShowTimeModel showtime = new ShowTimeModel();
-            int showtimeCapacity = showtime.getCapacity();
             ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCinemaByName(Long.valueOf(id));
-            if(CineClubResponse.getBody().getCapacity() < showtimeCapacity){
+            if(CineClubResponse.getBody().getCapacity() >= showtimeCapacity){
                 throw new ValidationException("Introduce a valid capacity");
             }
         } catch (FeignException feignException) {

@@ -16,7 +16,7 @@ public interface CinemaClient {
     boolean checkIfCinemaExist(@PathVariable("cineclubId") Long cineclubId) throws RuntimeException;
 
     @GetMapping("/cineclubs/{cineclubId}")
-    public ResponseEntity<CinemaResponse> getCinemaByName(@PathVariable("cineclubId") Long id);
+    public ResponseEntity<CinemaResponse> getCinemaByName(@PathVariable("cineclubId") Long cineclubId);
 
 
 
