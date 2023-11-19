@@ -81,6 +81,8 @@ public class ShowTimeServiceImpl implements ShowTimeService {
             throw new ValidationException(feignException.getMessage());
         }
     }
+
+
     private void ValidateCinemaStatus(String id) throws Exception{
         try{
             ResponseEntity<CinemaResponse> CineClubResponse = cinemaClient.getCinemaByName(Long.valueOf(id));
